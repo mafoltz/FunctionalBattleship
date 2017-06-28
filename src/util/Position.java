@@ -1,5 +1,8 @@
 package util;
 
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+
 public class Position {
 	private int x;
 	private int y;
@@ -14,19 +17,24 @@ public class Position {
 		this.y = y;
 	}
 	
-	public int getX() {
+	private int getX() {
 		return x;
 	}
 	
-	public int getY() {
+	private int getY() {
 		return y;
 	}
 	
-	public void setX(int x) {
+	private void setX(int x) {
 		this.x = x;
 	}
 	
-	public void setY(int y) {
+	private void setY(int y) {
 		this.y = y;
 	}
+	
+	public Function<Position, Integer> getX = Position::getX;
+	public Function<Position, Integer> getY = Position::getY;
+	public BiConsumer<Position, Integer> setX = Position::setX;
+	public BiConsumer<Position, Integer> setY = Position::setY;
 }

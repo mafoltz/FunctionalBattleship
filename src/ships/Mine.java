@@ -11,6 +11,7 @@ public class Mine extends Ship {
 	
 	public Mine(int x, int y)
 	{
-		setPosition.accept(this, new Position(x, y));
+		setPositionX.accept(this, x);
+		setPositionY.accept(this, y);
 	}
 }

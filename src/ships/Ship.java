@@ -17,11 +17,16 @@ public abstract class Ship {
 		this.cell = position;
 	}
 	
-	private void setPosition(int x, int y) {
-		cell.setX(x);
-		cell.setY(y);
+	private void setPositionX(int x) {
+		cell.setX.accept(cell, x);
+	}
+	
+	private void setPositionY(int y) {
+		cell.setX.accept(cell, y);
 	}
 	
 	public Function<Ship, Position> getPosition = Ship::getPosition;
 	public BiConsumer<Ship, Position> setPosition = Ship::setPosition;
+	public BiConsumer<Ship, Integer> setPositionX = Ship::setPositionX;
+	public BiConsumer<Ship, Integer> setPositionY = Ship::setPositionY;
 }

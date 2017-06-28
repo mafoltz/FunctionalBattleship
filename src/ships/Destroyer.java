@@ -28,8 +28,8 @@ public class Destroyer extends Mine {
 	
 	public void setCell2(int x, int y) {
 		// fazer verificação se é valida a posição da cell2
-		this.cell2.setX(x);
-		this.cell2.setY(y);
+		this.cell2.setX.accept(cell2, x);;
+		this.cell2.setY.accept(cell2, y);
 	}
 
 }
