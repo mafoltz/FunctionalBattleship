@@ -31,5 +31,4 @@ public class Destroyer extends Mine {
 		this.cell2.setX.accept(cell2, x);;
 		this.cell2.setY.accept(cell2, y);
 	}
-
 }

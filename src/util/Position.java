@@ -1,18 +1,23 @@
 package util;
 
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class Position {
 	private int x;
 	private int y;
 	
-	public Position() {
-		this.x = 0;
-		this.y = 0;
-	}
+	// Constructor
+	public static BiFunction<Integer, Integer, Position> makePosition = Position::new;
 	
-	public Position(int x, int y) {
+	// Getters and Setters
+	public Function<Position, Integer> getX = Position::getX;
+	public Function<Position, Integer> getY = Position::getY;
+	public BiConsumer<Position, Integer> setX = Position::setX;
+	public BiConsumer<Position, Integer> setY = Position::setY;
+	
+	private Position(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
@@ -32,9 +37,4 @@ public class Position {
 	private void setY(int y) {
 		this.y = y;
 	}
-	
-	public Function<Position, Integer> getX = Position::getX;
-	public Function<Position, Integer> getY = Position::getY;
-	public BiConsumer<Position, Integer> setX = Position::setX;
-	public BiConsumer<Position, Integer> setY = Position::setY;
 }

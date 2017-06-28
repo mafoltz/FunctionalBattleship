@@ -9,6 +9,12 @@ public abstract class Ship {
 	private Position cell;
 	private boolean isHit;
 	
+	// Getters and Setters
+	public Function<Ship, Position> getPosition = Ship::getPosition;
+	public BiConsumer<Ship, Position> setPosition = Ship::setPosition;
+	public BiConsumer<Ship, Integer> setPositionX = Ship::setPositionX;
+	public BiConsumer<Ship, Integer> setPositionY = Ship::setPositionY;
+	
 	private Position getPosition() {
 		return cell;
 	}
@@ -24,9 +30,4 @@ public abstract class Ship {
 	private void setPositionY(int y) {
 		cell.setX.accept(cell, y);
 	}
-	
-	public Function<Ship, Position> getPosition = Ship::getPosition;
-	public BiConsumer<Ship, Position> setPosition = Ship::setPosition;
-	public BiConsumer<Ship, Integer> setPositionX = Ship::setPositionX;
-	public BiConsumer<Ship, Integer> setPositionY = Ship::setPositionY;
 }
