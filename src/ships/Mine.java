@@ -11,13 +11,11 @@ public class Mine extends Ship {
 	public static Supplier<Mine> makeEmptyMine = Mine::new;
 	public static BiFunction<Integer, Integer, Mine> makeMine = Mine::new;
 	
-	public Mine()
-	{
+	public Mine() {
 		setPosition.accept(this, Position.makePosition.apply(0, 0));
 	}
 	
-	private Mine(int x, int y)
-	{
+	private Mine(int x, int y) {
 		setPositionX.accept(this, x);
 		setPositionY.accept(this, y);
 	}

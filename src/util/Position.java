@@ -5,6 +5,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class Position {
+	
 	private int x;
 	private int y;
 	

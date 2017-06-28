@@ -8,8 +8,8 @@ public class Main {
 		Mine mine = Mine.makeEmptyMine.get();
 		System.out.println("x = " + mine.getPosition.apply(mine).getX.apply(mine.getPosition.apply(mine)));
 		
-		//Setter test: must write position with 42
-		mine.setPositionX.accept(mine, 42);;
+		// Setter test: must write position with 42
+		mine.setPositionX.accept(mine, 42);
 		System.out.println("x = " + mine.getPosition.apply(mine).getX.apply(mine.getPosition.apply(mine)));
 	}
 }

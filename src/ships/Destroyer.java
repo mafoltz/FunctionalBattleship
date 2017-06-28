@@ -7,8 +7,7 @@ public class Destroyer extends Mine {
 	private Position cell2;
 	private char orientation;
 	
-	public Destroyer()
-	{
+	public Destroyer() {
 		super();
 		setOrientation('h');
 		setCell2(0,1);

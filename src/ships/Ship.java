@@ -6,6 +6,7 @@ import java.util.function.Function;
 import util.*;
 
 public abstract class Ship {
+	
 	private Position cell;
 	private boolean isHit;
 	
