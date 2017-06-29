@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 public class Ship {
 
+	// Properties
 	private int x;
 	private int y;
 	private int size;
