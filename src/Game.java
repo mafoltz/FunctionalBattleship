@@ -4,6 +4,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class Game {
+
 	private static final int BOARD_SIZE = 15;
 	private static final int NUM_MINES = 5;
 	private static final int NUM_SUBMARINES = 4;
@@ -23,12 +24,14 @@ public class Game {
 		ships = Game.generateShips.apply(ships, ships.length);
 
 		// Fill board with ships
-		Game.fillBoardWithShips.apply(board, ships);
+		board = Game.fillBoardWithShips.apply(board, ships);
 
-		for(Ship ship: ships) {
+		// TODO TESTS
+		System.out.println("\n\nFINAL:\n");
+		for (Ship ship : ships) {
 			System.out.println(ship);
 		}
-		
+
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board.length; j++) {
 				System.out.print(board[i][j]);
@@ -62,6 +65,9 @@ public class Game {
 				ships[n - 1] = Game.generateRandomShip.apply(SIZE_OF_SHIP);
 			}
 
+			System.out.println("\nGENERATION:");
+			System.out.println(ships[n - 1]);
+
 			// Apply recursion to generate the others ships
 			return Game.generateShips.apply(ships, n - 1);
 		}
@@ -79,6 +85,7 @@ public class Game {
 		if (ships.length == 0) {
 			return board;
 		} else {
+
 			if (Game.hasInvalidPosition.apply(board, ships[0])) {
 				// Generate new ship to replace the invalids positions
 				ships[0] = Game.generateRandomShip.apply(Ship.getSize.apply(ships[0]));
@@ -113,11 +120,14 @@ public class Game {
 			return false;
 		} else {
 			// Decrease ship size to apply recursion
-			Ship newShip = ship;
+			Ship newShip = Ship.setX.apply(Ship.setY.apply(
+					Ship.setSize.apply(Ship.setHorizontal.apply(Ship.makeShip.get(), Ship.isHorizontal.apply(ship)),
+							Ship.getSize.apply(ship)),
+					Ship.getY.apply(ship)), Ship.getX.apply(ship));
 			newShip = Ship.setSize.apply(newShip, Ship.getSize.apply(newShip) - 1);
-			
+
 			// Set ship position to next position to be checked in the board
-			if (Ship.isHorizontal.apply(ship)) {
+			if (Ship.isHorizontal.apply(newShip)) {
 				return Game.hasInvalidPosition.apply(board, Ship.setX.apply(newShip, Ship.getX.apply(newShip) + 1));
 			} else {
 				return Game.hasInvalidPosition.apply(board, Ship.setY.apply(newShip, Ship.getY.apply(newShip) + 1));
@@ -131,8 +141,11 @@ public class Game {
 		if (Ship.getSize.apply(ship) == 1) {
 			return board;
 		} else {
-			// Decrease ship size to apply recursion
-			Ship newShip = ship;
+			// Copy ship and decrease ship size to apply recursion
+			Ship newShip = Ship.setX.apply(Ship.setY.apply(
+					Ship.setSize.apply(Ship.setHorizontal.apply(Ship.makeShip.get(), Ship.isHorizontal.apply(ship)),
+							Ship.getSize.apply(ship)),
+					Ship.getY.apply(ship)), Ship.getX.apply(ship));
 			newShip = Ship.setSize.apply(newShip, Ship.getSize.apply(newShip) - 1);
 
 			// Set ship position to next position to be insert in the board

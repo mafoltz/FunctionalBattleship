@@ -37,7 +37,7 @@ public class Ship {
 		ship.horizontal = horizontal;
 		return ship;
 	};
-
+	
 	@Override
 	public String toString() {
 		String string = "Ship:\n";
