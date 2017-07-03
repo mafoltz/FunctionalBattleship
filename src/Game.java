@@ -23,7 +23,14 @@ public class Game {
 	}
 
 	public static Function<Integer, int[][]> makeBoard = size -> new int[size][size];
-	public static Function<Integer, Ship[]> makeShips = n -> new Ship[n];
+	
+	public static Function<Integer, Ship[]> makeShips = n -> {
+		Ship[] ships = new Ship[n];
+		for(int i = 0; i < ships.length; i++) {
+			ships[i] = Ship.setSize.apply(Ship.makeShip.get(), 1);
+		}
+		return ships;
+	};
 
 	public static BiFunction<Function<Integer, int[][]>, Integer, int[][]> initBoard = (fn, size) -> {
 		int[][] board = fn.apply(size);
@@ -42,6 +49,23 @@ public class Game {
 	};
 	
 	public static BiFunction<int[][], Ship, int[][]> insertShip = (board, ship) -> {
-		return board;
+		board[Ship.getX.apply(ship)][Ship.getY.apply(ship)] = 1;
+		
+		if(Ship.getSize.apply(ship) == 1) {
+			return board;
+		} else {
+			// Decrease ship size to apply recursion
+			Ship newShip = ship;
+			newShip = Ship.setSize.apply(newShip, Ship.getSize.apply(newShip) - 1);
+			
+			// Set ship position to next position to be insert in the board
+			if(Ship.isHorizontal.apply(newShip)) {
+				newShip = Ship.setX.apply(newShip, Ship.getX.apply(newShip));
+			} else {
+				newShip = Ship.setY.apply(newShip, Ship.getY.apply(newShip));
+			}
+			
+			return Game.insertShip.apply(board, newShip);
+		}
 	};
 }
