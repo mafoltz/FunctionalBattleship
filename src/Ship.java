@@ -47,7 +47,7 @@ public class Ship {
 		if (this.horizontal)
 			string = string.concat("isHorizontal = true\n");
 		else
-			string = string.concat("isHorizontal = true\n");
+			string = string.concat("isHorizontal = false\n");
 		return string;
 	}
 }

@@ -27,7 +27,6 @@ public class Game {
 		board = Game.fillBoardWithShips.apply(board, ships);
 
 		// TODO TESTS
-		System.out.println("\n\nFINAL:\n");
 		for (Ship ship : ships) {
 			System.out.println(ship);
 		}
@@ -64,9 +63,6 @@ public class Game {
 			} else {
 				ships[n - 1] = Game.generateRandomShip.apply(SIZE_OF_SHIP);
 			}
-
-			System.out.println("\nGENERATION:");
-			System.out.println(ships[n - 1]);
 
 			// Apply recursion to generate the others ships
 			return Game.generateShips.apply(ships, n - 1);
