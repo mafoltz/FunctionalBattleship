@@ -20,6 +20,14 @@ public class Game {
 		
 		// Fill board with ships
 		Game.fillBoardWithShips.apply(board, ships);
+		
+		for(int i = 0; i < board.length; i++) {
+			for(int j = 0; j < board.length; j++) {
+				System.out.print(board[i][j]);
+				System.out.print(" ");
+			}
+			System.out.println();
+		}
 	}
 
 	public static Function<Integer, int[][]> makeBoard = size -> new int[size][size];
@@ -27,7 +35,7 @@ public class Game {
 	public static Function<Integer, Ship[]> makeShips = n -> {
 		Ship[] ships = new Ship[n];
 		for(int i = 0; i < ships.length; i++) {
-			ships[i] = Ship.setSize.apply(Ship.makeShip.get(), 1);
+			ships[i] = Ship.setSize.apply(Ship.makeShip.get(), 3);
 		}
 		return ships;
 	};
@@ -60,9 +68,9 @@ public class Game {
 			
 			// Set ship position to next position to be insert in the board
 			if(Ship.isHorizontal.apply(newShip)) {
-				newShip = Ship.setX.apply(newShip, Ship.getX.apply(newShip));
+				newShip = Ship.setX.apply(newShip, Ship.getX.apply(newShip) + 1);
 			} else {
-				newShip = Ship.setY.apply(newShip, Ship.getY.apply(newShip));
+				newShip = Ship.setY.apply(newShip, Ship.getY.apply(newShip) + 1);
 			}
 			
 			return Game.insertShip.apply(board, newShip);
