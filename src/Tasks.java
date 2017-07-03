@@ -8,10 +8,7 @@ public class Tasks {
 		/* 2 - LAMBDA FUNCTIONS */
 		Ship ship = Ship.makeShip.get();
 		System.out.println(ship);
-		Ship.setX.accept(ship, 42);
-		Ship.setY.accept(ship, 10);
-		Ship.setSize.accept(ship, 3);
-		Ship.setHorizontal.accept(ship, false);
+		ship = Ship.setX.apply(Ship.setY.apply(Ship.setSize.apply(Ship.setHorizontal.apply(ship, false), 3), 10), 42);
 		System.out.println(ship);
 		
 		/* 3 - CURRYING */
