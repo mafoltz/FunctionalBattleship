@@ -26,7 +26,7 @@ public class Game {
 		// Fill board with ships
 		board = Game.fillBoardWithShips.apply(board, ships);
 
-		// TODO TESTS
+		// TESTS
 		for (Ship ship : ships) {
 			System.out.println(ship);
 		}
@@ -56,12 +56,12 @@ public class Game {
 			return ships;
 		} else {
 			// Generate the right number of mines, submarines and ships
-			if (n <= NUM_MINES) {
-				ships[n - 1] = Game.generateRandomShip.apply(SIZE_OF_MINE);
-			} else if (n <= NUM_MINES + NUM_SUBMARINES) {
+			if (n <= NUM_SHIPS) {
+				ships[n - 1] = Game.generateRandomShip.apply(SIZE_OF_SHIP);
+			} else if (n <= NUM_SHIPS + NUM_SUBMARINES) {
 				ships[n - 1] = Game.generateRandomShip.apply(SIZE_OF_SUBMARINE);
 			} else {
-				ships[n - 1] = Game.generateRandomShip.apply(SIZE_OF_SHIP);
+				ships[n - 1] = Game.generateRandomShip.apply(SIZE_OF_MINE);
 			}
 
 			// Apply recursion to generate the others ships
@@ -77,14 +77,22 @@ public class Game {
 				random.nextInt(BOARD_SIZE - size + 1)), random.nextInt(BOARD_SIZE - size + 1));
 	};
 
+	public static Function<Ship, Ship> regenerateRandomShip = ship -> {
+		Random random = new Random();
+
+		return Ship.setX.apply(
+				Ship.setY.apply(Ship.setHorizontal.apply(ship, random.nextBoolean()),
+						random.nextInt(BOARD_SIZE - Ship.getSize.apply(ship) + 1)),
+				random.nextInt(BOARD_SIZE - Ship.getSize.apply(ship) + 1));
+	};
+
 	public static BiFunction<int[][], Ship[], int[][]> fillBoardWithShips = (board, ships) -> {
 		if (ships.length == 0) {
 			return board;
 		} else {
-
 			if (Game.hasInvalidPosition.apply(board, ships[0])) {
-				// Generate new ship to replace the invalids positions
-				ships[0] = Game.generateRandomShip.apply(Ship.getSize.apply(ships[0]));
+				// TODO Generate new ship to replace the invalids positions
+				ships[0] = Game.regenerateRandomShip.apply(ships[0]);
 				return Game.fillBoardWithShips.apply(board, ships);
 
 			} else {
