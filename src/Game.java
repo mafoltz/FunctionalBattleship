@@ -42,11 +42,16 @@ public class Game {
 
 	public static Function<Integer, int[][]> makeBoard = size -> new int[size][size];
 
-	public static BiFunction<Function<Integer, int[][]>, Integer, int[][]> initBoard = (fn, size) -> {
-		int[][] board = fn.apply(size);
-		for (int i = 0; i < board.length; i++)
-			Arrays.fill(board[i], 0);
-		return board;
+	public static BiFunction<Function<Integer, int[][]>, Integer, int[][]> initBoard = (fn,
+			size) -> Game.fillBoardWithZeros.apply(fn.apply(size), size);
+
+	public static BiFunction<int[][], Integer, int[][]> fillBoardWithZeros = (board, n) -> {
+		if (n == 0) {
+			return board;
+		} else {
+			Arrays.fill(board[n - 1], 0);
+			return Game.fillBoardWithZeros.apply(board, n - 1);
+		}
 	};
 
 	public static Function<Integer, Ship[]> makeShips = n -> new Ship[n];
@@ -91,7 +96,7 @@ public class Game {
 			return board;
 		} else {
 			if (Game.hasInvalidPosition.apply(board, ships[0])) {
-				// TODO Generate new ship to replace the invalids positions
+				// Generate new ship to replace the invalids positions
 				ships[0] = Game.regenerateRandomShip.apply(ships[0]);
 				return Game.fillBoardWithShips.apply(board, ships);
 
