@@ -48,7 +48,7 @@ public class Game {
 		}
 	}
 
-	// TODO delete this methods
+	// TODO delete these methods
 	public static void print(Ship[] ships) {
 		for (Ship ship : ships) {
 			System.out.println(ship);
@@ -216,8 +216,12 @@ public class Game {
 		return board;
 	};
 
-	public static BiFunction<Integer, Integer, UnaryOperator<Ship[]>> updateShipAtPosition = (x, y) -> ship -> {
+	public static BiFunction<Integer, Integer, UnaryOperator<Ship>> updateShipAtPosition = (x, y) -> ship -> {
 		// TODO
+		if(x == Ship.getX.apply(ship) && y == Ship.getY.apply(ship)) {
+			Ship.setNumOfAliveCells.apply(ship, Ship.getNumOfAliveCells.apply(ship) - 1);
+		}
+		
 		return ship;
 	};
 }
