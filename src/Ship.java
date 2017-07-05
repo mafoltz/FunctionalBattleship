@@ -8,6 +8,7 @@ public class Ship {
 	private int x;
 	private int y;
 	private int size;
+	private int aliveCells;
 	private boolean horizontal;
 
 	// Constructors
@@ -32,12 +33,18 @@ public class Ship {
 		return ship;
 	};
 
+	public static Function<Ship, Integer> getNumOfAliveCells = ship -> ship.aliveCells;
+	public static BiFunction<Ship, Integer, Ship> setNumOfAliveCells = (ship, aliveCells) -> {
+		ship.aliveCells = aliveCells;
+		return ship;
+	};
+
 	public static Function<Ship, Boolean> isHorizontal = ship -> ship.horizontal;
 	public static BiFunction<Ship, Boolean, Ship> setHorizontal = (ship, horizontal) -> {
 		ship.horizontal = horizontal;
 		return ship;
 	};
-	
+
 	@Override
 	public String toString() {
 		String string = "Ship:\n";

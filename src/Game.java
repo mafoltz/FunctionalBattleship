@@ -106,7 +106,8 @@ public class Game {
 		Random random = new Random();
 
 		return Ship.setX.apply(Ship.setY.apply(
-				Ship.setSize.apply(Ship.setHorizontal.apply(Ship.makeShip.get(), random.nextBoolean()), size),
+				Ship.setSize.apply(Ship.setNumOfAliveCells
+						.apply(Ship.setHorizontal.apply(Ship.makeShip.get(), random.nextBoolean()), size), size),
 				random.nextInt(BOARD_SIZE - size + 1)), random.nextInt(BOARD_SIZE - size + 1));
 	};
 
@@ -157,10 +158,12 @@ public class Game {
 			return false;
 		} else {
 			// Decrease ship size to apply recursion
-			Ship newShip = Ship.setX.apply(Ship.setY.apply(
-					Ship.setSize.apply(Ship.setHorizontal.apply(Ship.makeShip.get(), Ship.isHorizontal.apply(ship)),
-							Ship.getSize.apply(ship)),
-					Ship.getY.apply(ship)), Ship.getX.apply(ship));
+			Ship newShip = Ship.setX
+					.apply(Ship.setY.apply(
+							Ship.setSize.apply(Ship.setNumOfAliveCells.apply(
+									Ship.setHorizontal.apply(Ship.makeShip.get(), Ship.isHorizontal.apply(ship)),
+									Ship.getNumOfAliveCells.apply(ship)), Ship.getSize.apply(ship)),
+							Ship.getY.apply(ship)), Ship.getX.apply(ship));
 			newShip = Ship.setSize.apply(newShip, Ship.getSize.apply(newShip) - 1);
 
 			// Set ship position to next position to be checked in the board
@@ -179,10 +182,12 @@ public class Game {
 			return board;
 		} else {
 			// Copy ship and decrease ship size to apply recursion
-			Ship newShip = Ship.setX.apply(Ship.setY.apply(
-					Ship.setSize.apply(Ship.setHorizontal.apply(Ship.makeShip.get(), Ship.isHorizontal.apply(ship)),
-							Ship.getSize.apply(ship)),
-					Ship.getY.apply(ship)), Ship.getX.apply(ship));
+			Ship newShip = Ship.setX
+					.apply(Ship.setY.apply(
+							Ship.setSize.apply(Ship.setNumOfAliveCells.apply(
+									Ship.setHorizontal.apply(Ship.makeShip.get(), Ship.isHorizontal.apply(ship)),
+									Ship.getNumOfAliveCells.apply(ship)), Ship.getSize.apply(ship)),
+							Ship.getY.apply(ship)), Ship.getX.apply(ship));
 			newShip = Ship.setSize.apply(newShip, Ship.getSize.apply(newShip) - 1);
 
 			// Set ship position to next position to be insert in the board
