@@ -1,7 +1,9 @@
 import java.util.Arrays;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.IntUnaryOperator;
 
 public class Game {
 
@@ -27,6 +29,23 @@ public class Game {
 		board = Game.fillBoardWithShips.apply(board, ships);
 
 		// TESTS
+		print(ships, board);
+
+		// Here we need the interface
+		while (true) {
+			int row = read("row");
+			int column = read("column");
+
+			if (Game.hasShipAtPosition.apply(Game.getValueForPositionUsingCurrying.apply(board, row).applyAsInt(column))) {
+				System.out.println("Position has ship!\n");
+			} else {
+				System.out.println("Water\n");
+			}
+		}
+	}
+
+	// TODO delete this method
+	public static void print(Ship[] ships, int[][] board) {
 		for (Ship ship : ships) {
 			System.out.println(ship);
 		}
@@ -38,6 +57,15 @@ public class Game {
 			}
 			System.out.println();
 		}
+	}
+
+	// TODO delete this method after interface implementation
+	private static Scanner scanner;
+
+	public static int read(String text) {
+		System.out.print("Enter " + text + ": ");
+		scanner = new Scanner(System.in);
+		return scanner.nextInt();
 	}
 
 	public static Function<Integer, int[][]> makeBoard = size -> new int[size][size];
@@ -167,4 +195,9 @@ public class Game {
 			return Game.insertShipAtBoard.apply(board, newShip);
 		}
 	};
+
+	public static Function<Integer, Boolean> hasShipAtPosition = n -> n == 1;
+
+	public static BiFunction<int[][], Integer, IntUnaryOperator> getValueForPositionUsingCurrying = (board,
+			row) -> column -> board[row][column];
 }
