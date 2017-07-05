@@ -51,6 +51,7 @@ public class Ship {
 		string = string.concat("x = " + this.x + "\n");
 		string = string.concat("y = " + this.y + "\n");
 		string = string.concat("size = " + this.size + "\n");
+		string = string.concat("alive cells = " + this.aliveCells + "\n");
 		if (this.horizontal)
 			string = string.concat("isHorizontal = true\n");
 		else
