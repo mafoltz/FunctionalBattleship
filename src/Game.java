@@ -33,10 +33,10 @@ public class Game {
 
 		// Here we need the interface
 		while (true) {
-			int row = read("row");
-			int column = read("column");
+			int y = read("row");
+			int x = read("column");
 
-			if (Game.hasShipAtPosition.apply(Game.getValueForPositionUsingCurrying.apply(board, row).applyAsInt(column))) {
+			if (Game.hasShipAtPosition.apply(Game.getValueForPositionUsingCurrying.apply(board, x).applyAsInt(y))) {
 				System.out.println("Position has ship!\n");
 			} else {
 				System.out.println("Water\n");
@@ -199,5 +199,5 @@ public class Game {
 	public static Function<Integer, Boolean> hasShipAtPosition = n -> n == 1;
 
 	public static BiFunction<int[][], Integer, IntUnaryOperator> getValueForPositionUsingCurrying = (board,
-			row) -> column -> board[row][column];
+			x) -> y -> board[y][x];
 }
