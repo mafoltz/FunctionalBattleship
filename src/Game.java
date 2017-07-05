@@ -4,6 +4,7 @@ import java.util.Scanner;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.IntUnaryOperator;
+import java.util.function.UnaryOperator;
 
 public class Game {
 
@@ -29,27 +30,32 @@ public class Game {
 		board = Game.fillBoardWithShips.apply(board, ships);
 
 		// TESTS
-		print(ships, board);
+		print(ships);
+		print(board);
 
 		// Here we need the interface
 		while (true) {
 			int y = read("row");
 			int x = read("column");
 
-			if (Game.hasShipAtPosition.apply(Game.getValueForPositionUsingCurrying.apply(board, x).applyAsInt(y))) {
-				System.out.println("Position has ship!\n");
+			if (Game.hasShipAtPosition.apply(Game.getValueForPosition.apply(board, x).applyAsInt(y))) {
+				Game.updateBoardAtPosition.apply(x, y).apply(board);
+				System.out.println("Position had ship!\n");
+				print(board);
 			} else {
 				System.out.println("Water\n");
 			}
 		}
 	}
 
-	// TODO delete this method
-	public static void print(Ship[] ships, int[][] board) {
+	// TODO delete this methods
+	public static void print(Ship[] ships) {
 		for (Ship ship : ships) {
 			System.out.println(ship);
 		}
+	}
 
+	public static void print(int[][] board) {
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board.length; j++) {
 				System.out.print(board[i][j]);
@@ -57,9 +63,9 @@ public class Game {
 			}
 			System.out.println();
 		}
+		System.out.println();
 	}
 
-	// TODO delete this method after interface implementation
 	private static Scanner scanner;
 
 	public static int read(String text) {
@@ -203,6 +209,15 @@ public class Game {
 
 	public static Function<Integer, Boolean> hasShipAtPosition = n -> n == 1;
 
-	public static BiFunction<int[][], Integer, IntUnaryOperator> getValueForPositionUsingCurrying = (board,
-			x) -> y -> board[y][x];
+	public static BiFunction<int[][], Integer, IntUnaryOperator> getValueForPosition = (board, x) -> y -> board[y][x];
+
+	public static BiFunction<Integer, Integer, UnaryOperator<int[][]>> updateBoardAtPosition = (x, y) -> board -> {
+		board[y][x] = 0;
+		return board;
+	};
+
+	public static BiFunction<Integer, Integer, UnaryOperator<Ship[]>> updateShipAtPosition = (x, y) -> ship -> {
+		// TODO
+		return ship;
+	};
 }
