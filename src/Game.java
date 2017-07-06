@@ -1,10 +1,12 @@
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.IntUnaryOperator;
 import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
 
 public class Game {
 
@@ -129,11 +131,12 @@ public class Game {
 			return false;
 		} else {
 			// Decrease ship size to apply recursion
-			Ship newShip = Ship.setX.apply(Ship.setY.apply(
-					Ship.setSize.apply(Ship.setNumOfAliveCells.apply(
-							Ship.setHorizontal.apply(Ship.makeShip.get(), Ship.isHorizontal.apply(ship)),
-							Ship.getNumOfAliveCells.apply(ship)), Ship.getSize.apply(ship)),
-					Ship.getY.apply(ship)), Ship.getX.apply(ship));
+			Ship newShip = Ship.setX
+					.apply(Ship.setY.apply(
+							Ship.setSize.apply(Ship.setNumOfAliveCells.apply(
+									Ship.setHorizontal.apply(Ship.makeShip.get(), Ship.isHorizontal.apply(ship)),
+									Ship.getNumOfAliveCells.apply(ship)), Ship.getSize.apply(ship)),
+							Ship.getY.apply(ship)), Ship.getX.apply(ship));
 			newShip = Ship.setSize.apply(newShip, Ship.getSize.apply(newShip) - 1);
 
 			// Set ship position to next position to be checked in the board
@@ -152,11 +155,12 @@ public class Game {
 			return board;
 		} else {
 			// Copy ship and decrease ship size to apply recursion
-			Ship newShip = Ship.setX.apply(Ship.setY.apply(
-					Ship.setSize.apply(Ship.setNumOfAliveCells.apply(
-							Ship.setHorizontal.apply(Ship.makeShip.get(), Ship.isHorizontal.apply(ship)),
-							Ship.getNumOfAliveCells.apply(ship)), Ship.getSize.apply(ship)),
-					Ship.getY.apply(ship)), Ship.getX.apply(ship));
+			Ship newShip = Ship.setX
+					.apply(Ship.setY.apply(
+							Ship.setSize.apply(Ship.setNumOfAliveCells.apply(
+									Ship.setHorizontal.apply(Ship.makeShip.get(), Ship.isHorizontal.apply(ship)),
+									Ship.getNumOfAliveCells.apply(ship)), Ship.getSize.apply(ship)),
+							Ship.getY.apply(ship)), Ship.getX.apply(ship));
 			newShip = Ship.setSize.apply(newShip, Ship.getSize.apply(newShip) - 1);
 
 			// Set ship position to next position to be insert in the board
@@ -172,6 +176,7 @@ public class Game {
 
 	public static BiFunction<int[][], Ship[], int[][]> runGame = (board, ships) -> {
 		if (Game.hasGameFinished.apply(board)) {
+			System.out.println("CONGRATULATIONS! YOU WON THE GAME :)");
 			return board;
 		} else {
 			// TODO insert interface here
@@ -183,7 +188,7 @@ public class Game {
 				Game.updateShipsAtPosition.apply(x, y).apply(ships.length).apply(ships);
 				Game.updateBoardAtPosition.apply(x, y).apply(board);
 
-				print(ships);
+				// print(ships);
 				System.out.println("Position had ship!\n");
 				print(board);
 			} else {
@@ -194,8 +199,30 @@ public class Game {
 		}
 	};
 
-	// TODO
-	public static Function<int[][], Boolean> hasGameFinished = board -> false;
+	public static Function<int[][], Boolean> hasGameFinished = board -> {
+		// TODO delete this print
+		int x = Game.convertMatrixToList.apply(board, board.length).stream().mapToInt(n -> n).sum();
+		System.out.println("Ships = " + x + "\n");
+
+		// Reduce a list to the sum of its elements
+		if (x == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	};
+
+	public static BiFunction<int[][], Integer, List<Integer>> convertMatrixToList = (matrix, n) -> {
+		if (n == 1) {
+			// End the recursion at the last row of the matrix
+			return Arrays.stream(matrix[n - 1]).boxed().collect(Collectors.toList());
+		} else {
+			// Map the int's to Integer's and add the numbers form other lists recursively
+			List<Integer> list = Arrays.stream(matrix[n - 1]).boxed().collect(Collectors.toList());
+			list.addAll(Game.convertMatrixToList.apply(matrix, n - 1));
+			return list;
+		}
+	};
 
 	public static Function<Integer, Boolean> hasShipAtPosition = n -> n == 1;
 
