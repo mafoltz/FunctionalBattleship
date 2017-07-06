@@ -17,7 +17,7 @@ public class Game {
 	private static final int SIZE_OF_SHIP = 3;
 
 	public static void main(String[] args) {
-		// Function that create a board filled with zeros
+		// Create a board filled with zeros
 		int[][] board = Game.initBoard.apply(makeBoard, BOARD_SIZE);
 
 		// Create an empty array of ships
@@ -29,49 +29,12 @@ public class Game {
 		// Fill board with ships
 		board = Game.fillBoardWithShips.apply(board, ships);
 
-		// TESTS
+		// TODO delete these tests
 		print(ships);
 		print(board);
 
-		// Here we need the interface
-		while (true) {
-			int y = read("row");
-			int x = read("column");
-
-			if (Game.hasShipAtPosition.apply(Game.getValueForPosition.apply(board, x).applyAsInt(y))) {
-				Game.updateBoardAtPosition.apply(x, y).apply(board);
-				System.out.println("Position had ship!\n");
-				print(board);
-			} else {
-				System.out.println("Water\n");
-			}
-		}
-	}
-
-	// TODO delete these methods
-	public static void print(Ship[] ships) {
-		for (Ship ship : ships) {
-			System.out.println(ship);
-		}
-	}
-
-	public static void print(int[][] board) {
-		for (int i = 0; i < board.length; i++) {
-			for (int j = 0; j < board.length; j++) {
-				System.out.print(board[i][j]);
-				System.out.print(" ");
-			}
-			System.out.println();
-		}
-		System.out.println();
-	}
-
-	private static Scanner scanner;
-
-	public static int read(String text) {
-		System.out.print("Enter " + text + ": ");
-		scanner = new Scanner(System.in);
-		return scanner.nextInt();
+		// Run the game
+		Game.runGame.apply(board, ships);
 	}
 
 	public static Function<Integer, int[][]> makeBoard = size -> new int[size][size];
@@ -136,7 +99,8 @@ public class Game {
 				return Game.fillBoardWithShips.apply(board, ships);
 
 			} else {
-				// Insert ship at board and apply recursion to insert the others ships
+				// Insert ship at board and apply recursion to insert the others
+				// ships
 				return Game.fillBoardWithShips.apply(Game.insertShipAtBoard.apply(board, ships[0]),
 						Arrays.copyOfRange(ships, 1, ships.length));
 			}
@@ -144,7 +108,8 @@ public class Game {
 	};
 
 	public static BiFunction<int[][], Ship, Boolean> hasInvalidPosition = (board, ship) -> {
-		// Check if already there are some ship in the current position and neighborhood
+		// Check if already there are some ship in the current position and
+		// neighborhood
 		if (board[Ship.getY.apply(ship)][Ship.getX.apply(ship)] != 0) {
 			return true;
 		} else if (Ship.getX.apply(ship) != 0 && board[Ship.getY.apply(ship)][Ship.getX.apply(ship) - 1] != 0) {
@@ -164,12 +129,11 @@ public class Game {
 			return false;
 		} else {
 			// Decrease ship size to apply recursion
-			Ship newShip = Ship.setX
-					.apply(Ship.setY.apply(
-							Ship.setSize.apply(Ship.setNumOfAliveCells.apply(
-									Ship.setHorizontal.apply(Ship.makeShip.get(), Ship.isHorizontal.apply(ship)),
-									Ship.getNumOfAliveCells.apply(ship)), Ship.getSize.apply(ship)),
-							Ship.getY.apply(ship)), Ship.getX.apply(ship));
+			Ship newShip = Ship.setX.apply(Ship.setY.apply(
+					Ship.setSize.apply(Ship.setNumOfAliveCells.apply(
+							Ship.setHorizontal.apply(Ship.makeShip.get(), Ship.isHorizontal.apply(ship)),
+							Ship.getNumOfAliveCells.apply(ship)), Ship.getSize.apply(ship)),
+					Ship.getY.apply(ship)), Ship.getX.apply(ship));
 			newShip = Ship.setSize.apply(newShip, Ship.getSize.apply(newShip) - 1);
 
 			// Set ship position to next position to be checked in the board
@@ -188,12 +152,11 @@ public class Game {
 			return board;
 		} else {
 			// Copy ship and decrease ship size to apply recursion
-			Ship newShip = Ship.setX
-					.apply(Ship.setY.apply(
-							Ship.setSize.apply(Ship.setNumOfAliveCells.apply(
-									Ship.setHorizontal.apply(Ship.makeShip.get(), Ship.isHorizontal.apply(ship)),
-									Ship.getNumOfAliveCells.apply(ship)), Ship.getSize.apply(ship)),
-							Ship.getY.apply(ship)), Ship.getX.apply(ship));
+			Ship newShip = Ship.setX.apply(Ship.setY.apply(
+					Ship.setSize.apply(Ship.setNumOfAliveCells.apply(
+							Ship.setHorizontal.apply(Ship.makeShip.get(), Ship.isHorizontal.apply(ship)),
+							Ship.getNumOfAliveCells.apply(ship)), Ship.getSize.apply(ship)),
+					Ship.getY.apply(ship)), Ship.getX.apply(ship));
 			newShip = Ship.setSize.apply(newShip, Ship.getSize.apply(newShip) - 1);
 
 			// Set ship position to next position to be insert in the board
@@ -207,6 +170,33 @@ public class Game {
 		}
 	};
 
+	public static BiFunction<int[][], Ship[], int[][]> runGame = (board, ships) -> {
+		if (Game.hasGameFinished.apply(board)) {
+			return board;
+		} else {
+			// TODO insert interface here
+			int y = read("row");
+			int x = read("column");
+
+			if (Game.hasShipAtPosition.apply(Game.getValueForPosition.apply(board, x).applyAsInt(y))) {
+				// A ship was hit, then the board and ship must be updated
+				Game.updateShipsAtPosition.apply(x, y).apply(ships.length).apply(ships);
+				Game.updateBoardAtPosition.apply(x, y).apply(board);
+
+				print(ships);
+				System.out.println("Position had ship!\n");
+				print(board);
+			} else {
+				System.out.println("Water\n");
+			}
+
+			return Game.runGame.apply(board, ships);
+		}
+	};
+
+	// TODO
+	public static Function<int[][], Boolean> hasGameFinished = board -> false;
+
 	public static Function<Integer, Boolean> hasShipAtPosition = n -> n == 1;
 
 	public static BiFunction<int[][], Integer, IntUnaryOperator> getValueForPosition = (board, x) -> y -> board[y][x];
@@ -216,12 +206,72 @@ public class Game {
 		return board;
 	};
 
-	public static BiFunction<Integer, Integer, UnaryOperator<Ship>> updateShipAtPosition = (x, y) -> ship -> {
-		// TODO
-		if(x == Ship.getX.apply(ship) && y == Ship.getY.apply(ship)) {
+	public static BiFunction<Integer, Integer, Function<Integer, UnaryOperator<Ship[]>>> updateShipsAtPosition = (x,
+			y) -> n -> ships -> {
+				if (n <= 0) {
+					return ships;
+				} else {
+					ships[n - 1] = Game.tryUpdateShipAtPosition.apply(x, y).apply(ships[n - 1]);
+					return Game.updateShipsAtPosition.apply(x, y).apply(n - 1).apply(ships);
+				}
+			};
+
+	public static BiFunction<Integer, Integer, UnaryOperator<Ship>> tryUpdateShipAtPosition = (x, y) -> ship -> {
+		// Ship begin in position
+		if (x == Ship.getX.apply(ship) && y == Ship.getY.apply(ship)) {
 			Ship.setNumOfAliveCells.apply(ship, Ship.getNumOfAliveCells.apply(ship) - 1);
 		}
-		
+
+		// Ship begin in one position above
+		else if (Ship.getSize.apply(ship) >= 2 && !Ship.isHorizontal.apply(ship) && x == Ship.getX.apply(ship)
+				&& y == Ship.getY.apply(ship) + 1) {
+			Ship.setNumOfAliveCells.apply(ship, Ship.getNumOfAliveCells.apply(ship) - 1);
+		}
+
+		// Ship begin in one position to the left
+		else if (Ship.getSize.apply(ship) >= 2 && Ship.isHorizontal.apply(ship) && x == Ship.getX.apply(ship) + 1
+				&& y == Ship.getY.apply(ship)) {
+			Ship.setNumOfAliveCells.apply(ship, Ship.getNumOfAliveCells.apply(ship) - 1);
+		}
+
+		// Ship begin in two positions above
+		else if (Ship.getSize.apply(ship) == 3 && !Ship.isHorizontal.apply(ship) && x == Ship.getX.apply(ship)
+				&& y == Ship.getY.apply(ship) + 2) {
+			Ship.setNumOfAliveCells.apply(ship, Ship.getNumOfAliveCells.apply(ship) - 1);
+		}
+
+		// Ship begin in two positions to the left
+		else if (Ship.getSize.apply(ship) == 3 && Ship.isHorizontal.apply(ship) && x == Ship.getX.apply(ship) + 2
+				&& y == Ship.getY.apply(ship)) {
+			Ship.setNumOfAliveCells.apply(ship, Ship.getNumOfAliveCells.apply(ship) - 1);
+		}
+
 		return ship;
 	};
+
+	// TODO delete these methods
+	public static void print(Ship[] ships) {
+		for (Ship ship : ships) {
+			System.out.println(ship);
+		}
+	}
+
+	public static void print(int[][] board) {
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board.length; j++) {
+				System.out.print(board[i][j]);
+				System.out.print(" ");
+			}
+			System.out.println();
+		}
+		System.out.println();
+	}
+
+	private static Scanner scanner;
+
+	public static int read(String text) {
+		System.out.print("Enter " + text + ": ");
+		scanner = new Scanner(System.in);
+		return scanner.nextInt();
+	}
 }
