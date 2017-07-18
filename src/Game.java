@@ -10,15 +10,15 @@ import java.util.stream.Collectors;
 
 public class Game {
 
-	private static final int BOARD_SIZE = 15;
-	private static final int NUM_MINES = 5;
-	private static final int NUM_SUBMARINES = 4;
-	private static final int NUM_SHIPS = 3;
-	private static final int SIZE_OF_MINE = 1;
-	private static final int SIZE_OF_SUBMARINE = 2;
-	private static final int SIZE_OF_SHIP = 3;
+	public static final int BOARD_SIZE = 15;
+	public static final int NUM_MINES = 5;
+	public static final int NUM_SUBMARINES = 4;
+	public static final int NUM_SHIPS = 3;
+	public static final int SIZE_OF_MINE = 1;
+	public static final int SIZE_OF_SUBMARINE = 2;
+	public static final int SIZE_OF_SHIP = 3;
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		// Create a board filled with zeros
 		int[][] board = Game.initBoard.apply(makeBoard, BOARD_SIZE);
 
@@ -37,7 +37,7 @@ public class Game {
 
 		// Run the game
 		Game.runGame.apply(board, ships);
-	}
+	}*/
 
 	public static Function<Integer, int[][]> makeBoard = size -> new int[size][size];
 
@@ -202,7 +202,7 @@ public class Game {
 	public static Function<int[][], Boolean> hasGameFinished = board -> {
 		// TODO delete this print
 		int x = Game.convertMatrixToList.apply(board, board.length).stream().mapToInt(n -> n).sum();
-		System.out.println("Ships = " + x + "\n");
+		//System.out.println("Ships = " + x + "\n");
 
 		// Reduce a list to the sum of its elements
 		if (x == 0) {
